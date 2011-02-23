@@ -14,10 +14,11 @@ for Z in range(1, 105):
     _Z = int(s[:s.find("<")])
     assert _Z == Z
     if Z == 85:
-        continue
-    s = trim(s, '<TD ALIGN="right">')
-    E = (s[:s.find("<")]).strip()
-    E = E.replace("?", "")
+        E = ""
+    else:
+        s = trim(s, '<TD ALIGN="right">')
+        E = (s[:s.find("<")]).strip()
+        E = E.replace("?", "")
     energies[Z] = E
 
 f = open("ion_energies.json", "w")
