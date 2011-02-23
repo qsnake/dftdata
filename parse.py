@@ -1,6 +1,14 @@
 #! /usr/bin/env python
 
+"""
+
+NIST DFT Data obtained from:
+
+http://physics.nist.gov/PhysRefData/DFTdata/
+"""
+
 from glob import glob
+from json import dump
 
 _symbols = ["H",  "He", "Li", "Be", "B",  "C",  "N",  "O",  "F", "Ne",
         "Na", "Mg", "Al", "Si", "P",  "S",  "Cl", "Ar", "K", "Ca",
@@ -15,9 +23,6 @@ _symbols = ["H",  "He", "Li", "Be", "B",  "C",  "N",  "O",  "F", "Ne",
         "Md", "No", "Lr", "Rf", "Db", "Sg", "Bh", "Hs", "Mt", "Ds",
         "Rg", "Uub", "Uut", "Uuq", "Uup", "Uuh", "Uus", "UUo"]
 
-
-approximations = ["LDA", "LSD", "RLDA", "ScRLDA"]
-
 element_data = {
         }
 for Z in range(1, 93):
@@ -31,7 +36,7 @@ for Z in range(1, 93):
                 }
         }
 
-for approx in approximations:
+for approx in ["LDA", "LSD", "RLDA", "ScRLDA"]:
     for Z in range(1, 93):
         for ion in ["neutral", "cation"]:
             if Z == 1 and ion == "cation":
@@ -53,16 +58,5 @@ for approx in approximations:
                 }
             element_data[Z]["DFT data"][ion][approx] = item
 
-
-Hartree2eV = 27.21138
-eV2kJpmol = 0.01036427
-t = []
-for Z in range(2, 93):
-    E = float(element_data[Z]["DFT data"]["cation"]["LDA"]["Etot"]) - \
-            float(element_data[Z]["DFT data"]["neutral"]["LDA"]["Etot"])
-    t.append((Z, E))
-t.sort(key=lambda x: x[1])
-t.reverse()
-for n, (Z, E) in enumerate(t):
-    symbol = element_data[Z]["symbol"]
-    print "%2d %2s %9.6f" % (n+1, symbol, E * Hartree2eV / eV2kJpmol)
+f = open("dftdata.json", "w")
+dump(element_data, f)
