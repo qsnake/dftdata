@@ -24,8 +24,13 @@ def exp_key(x):
 t.sort(key=exp_key)
 t.reverse()
 print "Ionization energies in eV"
-print "n symbol E_dft E_exp"
+print "n symbol E_dft E_exp error"
 for n, (Z, E) in enumerate(t):
     symbol = element_data[Z]["symbol"]
+    E_dft = E * Hartree2eV
     E_exp = ion_energies[str(Z)]
-    print "%2d %2s %9.6f %s" % (n+1, symbol, E * Hartree2eV, E_exp)
+    if E_exp == "":
+        error = 0
+    else:
+        error = abs(E_dft - float(E_exp))
+    print "%2d %2s %9.6f %-7s %6.2e" % (n+1, symbol, E_dft, E_exp, error)
