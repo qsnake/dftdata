@@ -2,8 +2,8 @@
 
 from json import load
 
-f = open("dftdata.json")
-element_data = load(f)
+element_data = load(open("dftdata.json"))
+ion_energies = load(open("ion_energy/ion_energies.json"))
 
 Hartree2eV = 27.21138
 eV2kJpmol = 0.01036427
@@ -17,6 +17,8 @@ for Z in range(2, 93):
 t.sort(key=lambda x: x[1])
 t.reverse()
 print "Ionization energies in eV"
+print "n symbol E_dft E_exp"
 for n, (Z, E) in enumerate(t):
     symbol = element_data[Z]["symbol"]
-    print "%2d %2s %9.6f" % (n+1, symbol, E * Hartree2eV)
+    E_exp = ion_energies[str(Z)]
+    print "%2d %2s %9.6f %s" % (n+1, symbol, E * Hartree2eV, E_exp)
