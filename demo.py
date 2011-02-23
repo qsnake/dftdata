@@ -14,7 +14,14 @@ for Z in range(2, 93):
     E = float(element_data[Z]["DFT data"]["cation"][approx]["Etot"]) - \
             float(element_data[Z]["DFT data"]["neutral"][approx]["Etot"])
     t.append((Z, E))
-t.sort(key=lambda x: x[1])
+def exp_key(x):
+    e = ion_energies[str(x[0])]
+    if e == "":
+        return 0
+    else:
+        return float(e)
+
+t.sort(key=exp_key)
 t.reverse()
 print "Ionization energies in eV"
 print "n symbol E_dft E_exp"
