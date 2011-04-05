@@ -2,8 +2,8 @@
 
 from json import load
 
-element_data = load(open("dftdata.json"))
-ion_energies = load(open("ion_energy/ion_energies.json"))
+element_data = load(open("../dftdata.json"))
+ion_energies = load(open("../ion_energy/ion_energies.json"))
 
 Hartree2eV = 27.21138
 eV2kJpmol = 0.01036427
