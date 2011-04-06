@@ -1,17 +1,18 @@
-module states
+module states_rel
 
 use types
 use utils
 implicit none
 private
-public get_atomic_states_nonrel, get_LDA_energies
+public get_atomic_states_rel, get_RLDA_energies
 
 contains
 
-subroutine get_atomic_states_nonrel(Z, no, lo, fo)
+subroutine get_atomic_states_rel(Z, no, lo, so, fo)
 ! Returns all electron states of the form (n, l, f) for a given Z
 integer, intent(in) :: Z ! atomic number
 integer, intent(out), allocatable :: no(:), lo(:) ! quantum numbers "n" and "l"
+integer, intent(out), allocatable :: so(:) ! spin (+1 or -1)
 real(dp), intent(out), allocatable :: fo(:) ! occupancy of the (n, l) state
 ! Note: sum(fo) == Z
 
@@ -31,7 +32,7 @@ select case (Z)
 end select
 end subroutine
 
-subroutine get_LDA_energies(Z, E)
+subroutine get_RLDA_energies(Z, E)
 integer, intent(in) :: Z
 real(dp), intent(out) :: E(:)
 
