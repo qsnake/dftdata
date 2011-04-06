@@ -31,4 +31,22 @@ select case (Z)
 end select
 end subroutine
 
+subroutine get_LDA_energies(Z, E)
+integer, intent(in) :: Z
+real(dp), intent(out) :: E(:)
+
+integer :: n
+
+select case (Z)
+{% for s in states %}
+    case ({{ s.Z }})
+        n = {{ s.len_n }}
+        if (size(E) /= n) stop_error("get_LDA_energies: wrong len(E)")
+        E = (/ {% for x in s.ks_energies %}{{ x }}{% if not loop.last %}, {% endif %}{% endfor %} /)
+{% endfor %}
+    case default
+        call stop_error("Z = " // str(Z) // " not supported.")
+end select
+end subroutine
+
 end module
