@@ -67,23 +67,34 @@ for approx in ["LDA", "LSD", "RLDA", "ScRLDA"]:
             Ecoul = f.readline().split("=")[1].strip()
             Eenuc = f.readline().split("=")[1].strip()
             Exc = f.readline().split("=")[1].strip()
+            ks_energies = []
+            while True:
+                state = f.readline().split()
+                if len(state) == 0:
+                    break
+                assert len(state) == 2
+                E = state[1]
+                ks_energies.append(E)
             item = {
                     "Etot": Etot,
                     "Ekin": Ekin,
                     "Ecoul": Ecoul,
                     "Eenuc": Eenuc,
                     "Exc": Exc,
+                    "ks_energies": ks_energies
                 }
             element_data[Z]["DFT data"][ion][approx] = item
-        configuration = conf[Z-1]
-        configuration = configuration.split("  ")[6].strip().split()
-        if configuration[0].startswith("["):
-            base = configuration[0]
-            base = base[1:-1]
-            base_Z = _symbols.index(base) + 1
-            base_configuration = element_data[base_Z]["configuration"]
-            configuration = base_configuration + configuration[1:]
-        element_data[Z]["configuration"] = configuration
+
+            if ion == "neutral" and approx == "LDA":
+                configuration = conf[Z-1]
+                configuration = configuration.split("  ")[6].strip().split()
+                if configuration[0].startswith("["):
+                    base = configuration[0]
+                    base = base[1:-1]
+                    base_Z = _symbols.index(base) + 1
+                    base_configuration = element_data[base_Z]["configuration"]
+                    configuration = base_configuration + configuration[1:]
+                element_data[Z]["configuration"] = configuration
 
 for Z in range(1, 93):
     n, l, f = convert_conf(element_data[Z]["configuration"])
