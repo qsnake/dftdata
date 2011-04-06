@@ -21,9 +21,9 @@ select case (Z)
     case ({{ s.Z }})
         n = {{ s.len_n }}
         allocate(no(n), lo(n), fo(n))
-        no = (/ {% for x in s.n %}{{ x }}, {% endfor %}/)
-        lo = (/ {% for x in s.l %}{{ x }}, {% endfor %}/)
-        fo = (/ {% for x in s.f %}{{ x }}, {% endfor %}/)
+        no = (/ {% for x in s.n %}{{ x }}{% if not loop.last %}, {% endif %}{% endfor %} /)
+        lo = (/ {% for x in s.l %}{{ x }}{% if not loop.last %}, {% endif %}{% endfor %} /)
+        fo = (/ {% for x in s.f %}{{ x }}{% if not loop.last %}, {% endif %}{% endfor %} /)
 {% endfor %}
     case default
         call stop_error("Z = " // str(Z) // " not supported.")
