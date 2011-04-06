@@ -41,7 +41,7 @@ select case (Z)
 {% for s in states %}
     case ({{ s.Z }})
         n = {{ s.len_n }}
-        if (size(E) /= n) stop_error("get_LDA_energies: wrong len(E)")
+        if (size(E) /= n) call stop_error("get_LDA_energies: wrong len(E)")
         E = (/ {% for x in s.ks_energies %}{{ x }}{% if not loop.last %}, {% endif %}{% endfor %} /)
 {% endfor %}
     case default
