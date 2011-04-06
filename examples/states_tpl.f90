@@ -1,6 +1,7 @@
-module utils
+module states
 
 use types
+use utils
 implicit none
 private
 public get_atomic_states_nonrel
