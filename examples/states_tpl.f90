@@ -42,7 +42,9 @@ select case (Z)
     case ({{ s.Z }})
         n = {{ s.len_n }}
         if (size(E) /= n) call stop_error("get_LDA_energies: wrong len(E)")
-        E = (/ {% for x in s.ks_energies %}{{ x }}{% if not loop.last %}, {% endif %}{% endfor %} /)
+        E = (/ &{% for x in s.ks_energies %}
+            {{ x }}_dp{% if not loop.last %}, {% endif %} &{% endfor %}
+            /)
 {% endfor %}
     case default
         call stop_error("Z = " // str(Z) // " not supported.")
