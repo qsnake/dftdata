@@ -2,25 +2,20 @@
 
 from jinja2 import Environment, FileSystemLoader
 
-states = [{
-    "Z" : 1,
-    "len_n" : 3,
-    "n" : [1, 2, 3],
-    "l" : [1.5, 2, 3],
-    "f" : [1.0, 2, 3],
-    }, {
-    "Z" : 2,
-    "len_n" : 3,
-    "n" : [1, 2, 3],
-    "l" : [1.5, 2, 3],
-    "f" : [1.0, 2, 3],
-    }, {
-    "Z" : 3,
-    "len_n" : 3,
-    "n" : [1, 2, 3],
-    "l" : [1.5, 2, 3],
-    "f" : [1.0, 2, 3],
-    }]
+from json import load
+
+states = []
+element_data = load(open("../dftdata.json"))
+for Z in range(1, 93):
+    Z = str(Z)
+    conf = element_data[Z]["configuration"]
+    states.append({
+        "Z" : Z,
+        "len_n" : len(conf["n"]),
+        "n" : conf["n"],
+        "l" : conf["l"],
+        "f" : conf["f"],
+        })
 
 print "Generating the Fortran file..."
 template = "states_tpl.f90"
