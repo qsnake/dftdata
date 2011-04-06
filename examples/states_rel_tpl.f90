@@ -26,7 +26,9 @@ select case (Z)
         no = (/ {% for x in s.n %}{{ x }}{% if not loop.last %}, {% endif %}{% endfor %} /)
         lo = (/ {% for x in s.l %}{{ x }}{% if not loop.last %}, {% endif %}{% endfor %} /)
         so = (/ {% for x in s.s %}{{ x }}{% if not loop.last %}, {% endif %}{% endfor %} /)
-        fo = (/ {% for x in s.f %}{{ x }}_dp{% if not loop.last %}, {% endif %}{% endfor %} /)
+        fo = (/ &{% for x in s.f %}
+            {{ x }}_dp{% if not loop.last %}, {% endif %} &{% endfor %}
+            /)
 {% endfor %}
     case default
         call stop_error("Z = " // str(Z) // " not supported.")
