@@ -4,7 +4,7 @@ use types
 use utils
 implicit none
 private
-public get_atomic_states_nonrel
+public get_atomic_states_nonrel, get_LDA_energies
 
 contains
 
